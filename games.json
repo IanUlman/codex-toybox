@@ -4,5 +4,11 @@
     "title": "Tap Rush",
     "description": "A tiny 15-second button-mashing contest. Your first toybox experiment.",
     "emoji": "⚡"
+  },
+  {
+    "slug": "claire-tactics",
+    "title": "Tactics Against Claire",
+    "description": "Command three units in a turn-based duel against Claire in a separate ChatGPT conversation.",
+    "emoji": "♞"
   }
 ]
