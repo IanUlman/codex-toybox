@@ -1,0 +1,7 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Tactics Against Claire</title><link rel="stylesheet" href="style.css"></head><body><main>
+<nav><a href="../../">‹ Toybox</a><button id="new">New game</button><button id="restart">Restart</button></nav>
+<header><h1>Tactics <em>Against Claire</em></h1><p id="status" aria-live="polite"></p></header>
+<div class="layout"><section><div class="boardhead"><strong>Battlefield</strong><span><b class="ian">● Ian</b> <b class="claire">◆ Claire</b></span></div><div id="board"></div></section>
+<aside><section class="panel"><h2 id="heading"></h2><p id="preview" aria-live="polite"></p><button class="primary" id="commit">Commit action</button><div id="transfer"><button class="primary" id="copy">COPY POSITION FOR CLAIRE</button><button id="import">IMPORT CLAIRE'S MOVE</button></div></section>
+<details open><summary>Combat log</summary><ol id="log"></ol></details><details><summary>Units &amp; rules</summary><div id="units"></div><p id="rules"></p></details></aside></div>
+<p id="storage" role="status"></p><dialog><form method="dialog"><button class="close">Close</button></form><h2 id="modalTitle"></h2><label for="field" id="hint"></label><textarea id="field" rows="9"></textarea><p id="message" role="alert"></p><button class="primary" id="submit"></button></dialog></main><script type="module" src="app.mjs"></script></body></html>
