@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111425">
+  <title>Tap Rush · Codex Toybox</title>
+  <style>
+    :root { color-scheme: dark; font-family: system-ui, -apple-system, sans-serif; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100svh; background: #111425; color: #f5f4ff; display: flex; justify-content: center; align-items: center; padding: 20px; }
+    main { width: min(100%, 520px); text-align: center; }
+    a { color: #bebaff; display: inline-block; margin-bottom: 26px; text-decoration: none; }
+    h1 { font-size: clamp(2.5rem, 11vw, 4.5rem); letter-spacing: -.06em; margin: 0 0 8px; }
+    p { color: #b5b9d2; line-height: 1.5; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 30px 0; }
+    .stat { background: #20253f; border: 1px solid #373e63; border-radius: 14px; padding: 15px 7px; }
+    .number { display: block; font-weight: 800; font-size: 2rem; }
+    .label { display: block; color: #b5b9d2; font-size: .8rem; }
+    button { font: inherit; cursor: pointer; border: 0; }
+    #tap { width: min(100%, 270px); aspect-ratio: 1; border-radius: 50%; background: #bcb5ff; color: #1b1946; font-size: 2.25rem; font-weight: 900; box-shadow: 0 12px 0 #7770c3, 0 24px 45px #070713; touch-action: manipulation; user-select: none; }
+    #tap:active:not(:disabled) { transform: translateY(7px); box-shadow: 0 5px 0 #7770c3, 0 14px 30px #070713; }
+    #tap:disabled { opacity: .45; cursor: default; }
+    #start { margin-top: 30px; padding: 14px 26px; border-radius: 12px; background: #363f65; color: white; font-weight: 700; }
+    #start:focus-visible, #tap:focus-visible, a:focus-visible { outline: 3px solid white; outline-offset: 4px; }
+    #status { min-height: 24px; }
+  </style>
+</head>
+<body>
+  <main>
+    <a href="../../">← Back to Toybox</a>
+    <h1>⚡ Tap Rush</h1>
+    <p>Fifteen seconds. One button. Absolutely no dignity.</p>
+    <div class="stats" aria-live="polite">
+      <div class="stat"><span class="number" id="score">0</span><span class="label">Score</span></div>
+      <div class="stat"><span class="number" id="time">15.0</span><span class="label">Seconds</span></div>
+      <div class="stat"><span class="number" id="best">0</span><span class="label">Best</span></div>
+    </div>
+    <button id="tap" disabled>GO!</button>
+    <div><button id="start">Start round</button></div>
+    <p id="status" aria-live="polite">Ready when you are.</p>
+  </main>
+  <script>
+    const duration = 15000;
+    const scoreEl = document.querySelector('#score');
+    const timeEl = document.querySelector('#time');
+    const bestEl = document.querySelector('#best');
+    const tapButton = document.querySelector('#tap');
+    const startButton = document.querySelector('#start');
+    const statusEl = document.querySelector('#status');
+    let score = 0, best = 0, deadline = 0, ticker = null, running = false;
+    try { best = Number(localStorage.getItem('toybox-tap-rush-best')) || 0; } catch {}
+    bestEl.textContent = best;
+    function finish() {
+      if (!running) return;
+      running = false;
+      clearInterval(ticker);
+      tapButton.disabled = true;
+      startButton.disabled = false;
+      timeEl.textContent = '0.0';
+      if (score > best) {
+        best = score;
+        bestEl.textContent = best;
+        try { localStorage.setItem('toybox-tap-rush-best', String(best)); } catch {}
+        statusEl.textContent = `New record: ${score}! Glory is yours.`;
+      } else { statusEl.textContent = `Final score: ${score}. Another round?`; }
+    }
+    function tick() {
+      const remaining = Math.max(0, deadline - performance.now());
+      timeEl.textContent = (remaining / 1000).toFixed(1);
+      if (remaining <= 0) finish();
+    }
+    startButton.addEventListener('click', () => {
+      score = 0;
+      scoreEl.textContent = score;
+      timeEl.textContent = '15.0';
+      deadline = performance.now() + duration;
+      running = true;
+      tapButton.disabled = false;
+      startButton.disabled = true;
+      statusEl.textContent = 'Tap like your honor depends on it!';
+      clearInterval(ticker);
+      ticker = setInterval(tick, 50);
+    });
+    tapButton.addEventListener('click', () => {
+      if (!running) return;
+      if (performance.now() >= deadline) { finish(); return; }
+      scoreEl.textContent = ++score;
+    });
+    document.addEventListener('visibilitychange', () => { if (!document.hidden && running) tick(); });
+  </script>
+</body>
+</html>
