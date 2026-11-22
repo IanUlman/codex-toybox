@@ -4,5 +4,11 @@
     "title": "Tap Rush",
     "description": "A tiny 15-second button-mashing contest. Your first toybox experiment.",
     "emoji": "⚡"
+  },
+  {
+    "slug": "demon-lords-legal-defense",
+    "title": "Demon Lord's Legal Defense",
+    "description": "Defend the demon who stole the moon. Inspect exhibits, raise objections, and salvage a spectacularly guilty client's case.",
+    "emoji": "⚖️"
   }
 ]
